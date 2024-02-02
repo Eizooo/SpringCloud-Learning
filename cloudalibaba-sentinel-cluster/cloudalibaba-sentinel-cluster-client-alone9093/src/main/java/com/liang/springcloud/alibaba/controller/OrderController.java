@@ -1,11 +1,17 @@
 package com.liang.springcloud.alibaba.controller;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.context.ContextUtil;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.liang.springcloud.entities.CommonResult;
 import com.liang.springcloud.entities.Order;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 /**
  * @PROJECT_NAME: SpringCloud-Learning
@@ -22,7 +28,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/order/{id}")
-    @SentinelResource(value = "order")
+    @SentinelResource("order")
     public CommonResult<Order> getOrder(@PathVariable("id") Long id){
 
         Order order = new Order(id, "default");
@@ -35,7 +41,6 @@ public class OrderController {
      * @return
      */
     @GetMapping("/hot_order/{id}/{serial}")
-    @SentinelResource(value = "order")
     public CommonResult<Order> getOrder(@PathVariable("id") Long id,@PathVariable(value = "serial",required = false) String serial){
 
         Order order = new Order(id, serial);
